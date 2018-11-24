@@ -25,7 +25,7 @@ const customHistory = createBrowserHistory();
 const history = syncHistoryWithStore(customHistory, store);
 
 const fakeAuth = {
-    isAuthenticated: false,
+    isAuthenticated: store.getState().login.isAuthenticated,
     authenticate(cb) {
         this.isAuthenticated = true;
         setTimeout(cb, 100); // fake async
@@ -36,22 +36,28 @@ const fakeAuth = {
     }
 };
 
-const PrivateRoute = ({component: Component, ...rest}) => (
-    <Route {...rest} render={(props) => (
-        fakeAuth.isAuthenticated === true
-            ? <Component {...props} />
-            : <Redirect to='/login'/>
-    )}/>
-)
+const PrivateRoute = ({component: Component, ...rest}) => {
+    console.log('PrivateRoute');
+    return (
+        <Route {...rest} render={(props) => (
+            store.getState().login.isAuthenticated === true
+                ? <Component {...props} />
+                : <Redirect to='/login'/>
+        )}/>
+    );
+}
 
-const LoginRoute = ({component: Component, ...rest}) => (
-    <Route {...rest} render={(props) => (
-        fakeAuth.isAuthenticated === false
-            ? <Component {...props} />
-            : <Redirect to='/'/>
-    )}/>
-)
+const LoginRoute = ({component: Component, ...rest}) => {
+    console.log();
+    return (
+        <Route {...rest} render={(props) => (
+            store.getState().login.isAuthenticated === false
+                ? <Component {...props} />
+                : <Redirect to='/'/>
+        )}/>
+    )
 
+}
 class Root extends Component {
     render() {
         return (
@@ -67,8 +73,9 @@ class Root extends Component {
             </Provider>
         );
     }
-
 }
+
+
 
 
 export default Root

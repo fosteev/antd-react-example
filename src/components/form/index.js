@@ -22,6 +22,7 @@ class NormalLoginForm extends React.Component {
                 this.parentHandler(values);
             }
         });
+        this.props.onSubmit();
     }
 
     render() {

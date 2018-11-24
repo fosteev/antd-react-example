@@ -1,37 +1,25 @@
 import React, {Component} from 'react';
 
-import './App.css';
-import {Drawer, Button} from 'antd';
+import { Drawer, Button } from 'antd';
+import {auth} from "../../actions/login";
 import connect from "react-redux/es/connect/connect";
 
-import Login from './screens/login';
+class Dashboard extends React.Component {
+    state = { visible: false };
 
-import {
-    Router,
-    Route,
-    Link,
-    Redirect,
-    withRouter,
-    Switch
-} from 'react-router-dom';
+    showDrawer = () => {
+        this.setState({
+            visible: true,
+        });
+    };
 
-import Dashboard from './screens/dashboard';
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    };
 
-
-
-class App extends React.Component {
-    state = {
-        boll: false
-    }
     render() {
-        // const { isAuthenticated } = this.props.login;
-        // const { pathname } = this.props.location;
-        //
-        // if ((isAuthenticated === false) && (pathname === '/') && (this.state.boll === false)) {
-        //     this.state.boll = true;
-        //     return <Redirect to='/login' />
-        // }
-
         return (
             <div>
                 <Button type="primary" onClick={this.showDrawer}>
@@ -61,13 +49,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        auth: id => dispatch(auth())
     }
 }
-
-const AppConnect = connect(
+const LoginForm = connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
-export default AppConnect;
-
+)(Dashboard);
+export default LoginForm;
